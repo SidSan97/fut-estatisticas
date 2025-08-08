@@ -24,21 +24,23 @@ class EstatisticasRepository {
         $this->mensalista = $mensalista;
     }
 
-    public function load()
+    public function load(?int $ano = null)
     {
         $estatisticas = $this->mensalista::select([
-            'mensalistas.nome',
+            'mensalistas.nome', 'jogos.ano',
             DB::raw('SUM(estatisticas_por_jogo.gols) as total_gols'),
             DB::raw('SUM(estatisticas_por_jogo.assistencias) as total_assistencias'),
             DB::raw('SUM(estatisticas_por_jogo.cartao_amarelo) as total_amarelo'),
             DB::raw('SUM(estatisticas_por_jogo.cartao_vermelho) as total_vermelho'),
             DB::raw('SUM(estatisticas_por_jogo.cartao_azul) as total_azul'),
-            DB::raw('SUM(estatisticas_por_jogo.gols_contra) as total_gols_contra')
+            DB::raw('SUM(estatisticas_por_jogo.gols_contra) as total_gols_contra'),
         ])
         ->join('estatisticas_por_jogo', 'mensalistas.id', '=', 'estatisticas_por_jogo.mensalista_id')
         ->join('jogos', 'estatisticas_por_jogo.jogo_id', '=', 'jogos.id')
-        //->where('jogos.ano', $anoDesejado)
-        ->groupBy('mensalistas.id', 'mensalistas.nome')
+        ->when($ano !== null, function ($query) use ($ano) {
+            $query->where('jogos.ano', $ano);
+        })
+        ->groupBy('mensalistas.id', 'mensalistas.nome', 'jogos.ano')
         ->orderByDesc('total_gols')
         ->get();
 
@@ -54,7 +56,7 @@ class EstatisticasRepository {
             DB::raw('SUM(estatisticas_por_jogo.cartao_amarelo) as total_amarelo'),
             DB::raw('SUM(estatisticas_por_jogo.cartao_vermelho) as total_vermelho'),
             DB::raw('SUM(estatisticas_por_jogo.cartao_azul) as total_azul'),
-            DB::raw('SUM(estatisticas_por_jogo.gols_contra) as total_gols_contra')
+            DB::raw('SUM(estatisticas_por_jogo.gols_contra) as total_gols_contra'),
         ])
         ->join('estatisticas_por_jogo', 'mensalistas.id', '=', 'estatisticas_por_jogo.mensalista_id')
         ->join('jogos', 'estatisticas_por_jogo.jogo_id', '=', 'jogos.id')

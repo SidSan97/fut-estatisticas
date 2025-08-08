@@ -42,7 +42,9 @@
             </table>
         </div>
 
-        <h3 class="mb-3 mt-3 me-2">Estatísticas do último baba</h3>
+        <br><hr><br>
+
+        <h3 class="mb-3 mt-3 me-2">Números do último baba</h3>
 
         <div class="table-responsive mb-3">
             <table class="table table-striped table-bordered">
@@ -105,7 +107,7 @@
         },
         methods: {
             async load() {
-                //this.$loading.show();
+                this.$loading.show();
                 try {
                     const response = await axios.get('carregar-todas-estatisticas');
                     this.estatisticas = response.data.data;
@@ -113,12 +115,12 @@
                 }catch(error) {
                     console.error(error);
                     swalError(error.response.data.error)
-                }/*finally{
+                }finally{
                     this.$loading.hide();
-                }*/
+                }
             },
             async lerDadosUltimoJogo() {
-                //this.$loading.show();
+                this.$loading.show();
                 try {
                     const response = await axios.get('carregar-estatisticas-ultimo-jogo');
                     this.estatisticasUltimoJogo = response.data.data;
@@ -126,9 +128,9 @@
                 }catch(error) {
                     console.error(error);
                     swalError(error.response.data.error)
-                }/*finally{
+                }finally{
                     this.$loading.hide();
-                }*/
+                }
             },
             colunaDestaque(campo) {
                 return this.filtro === campo ? 'coluna-destaque' : '';

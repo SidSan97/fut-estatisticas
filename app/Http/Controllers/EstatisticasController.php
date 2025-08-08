@@ -42,4 +42,17 @@ class EstatisticasController extends Controller
             return  response()->json(['error' => "Não foi possivel carregar dados do ultimo jogo."], 500);
         }
     }
+
+    public function obterDadosPorAno(int $ano)
+    {
+        try {
+            $data = $this->estatisticasRepository->load($ano);
+
+            return response()->json(['data' => $data], 200);
+
+        } catch(Exception $e) {
+            Log::error('Erro ao carregar dados anual', [$e]);
+            return  response()->json(['error' => "Não foi possivel carregar dados anual."], 500);
+        }
+    }
 }

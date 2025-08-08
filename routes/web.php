@@ -14,6 +14,7 @@ Route::get('dashboard', function () {
 
 Route::get('carregar-todas-estatisticas', [EstatisticasController::class, 'index']);
 Route::get('carregar-estatisticas-ultimo-jogo', [EstatisticasController::class, 'obterDadosUltimaPartida']);
+Route::get('carregar-todas-estatisticas-do-ano/{ano}', [EstatisticasController::class, 'obterDadosPorAno']);
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
