@@ -9,7 +9,8 @@ import { initializeTheme } from './composables/useAppearance';
 
 import loading from './plugins/loading';
 
-import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.min.js'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import './plugins/loading.scss';

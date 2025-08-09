@@ -2,73 +2,94 @@
     <div class="container-fluid">
         <h3 align="center" class="mb-3">Dashboard</h3>
 
-        <!--DADOS SEMANAIS-->
-        <h5 class="text-success">Destaques positivos da semana</h5>
-        <div class="row mb-3">
-            <div class="col-lg-6 mb-2">
-                <p class="text-center legenda-chart">Principais artilheiros</p>
-                <Bar
-                    :data="chartArtilheiros"
-                    :options="chartOptions"
-                />
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Estatísticas do último baba
+                    </button>
+                </h2>
+
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <h5 class="text-success">Destaques positivos da semana</h5>
+                        <div class="row mb-3">
+                            <div class="col-lg-6 mb-2">
+                                <p class="text-center legenda-chart">Principais artilheiros</p>
+                                <Bar
+                                    :data="chartArtilheiros"
+                                    :options="chartOptions"
+                                />
+                            </div>
+
+                            <div class="col-lg-6 mb-2">
+                                <p class="text-center legenda-chart">Principais garçons</p>
+                                <Bar
+                                    :data="chartAssistencias"
+                                    :options="chartOptions"
+                                />
+                            </div>
+                        </div>
+
+                        <br>
+
+                        <h5 class="text-danger">Destaques negativos da semana</h5>
+
+                        <div class="row mb-5">
+                            <div class="col-lg-6 mb-2">
+                                <p class="text-center legenda-chart">Mais cartões amarelos</p>
+                                <Bar
+                                    :data="chartMaisCartoesAmarelos"
+                                    :options="chartOptions"
+                                />
+                            </div>
+
+                            <div class="col-lg-6 mb-2">
+                                <p class="text-center legenda-chart">Mais cartões vermelhos</p>
+                                <Bar
+                                    :data="chartMaisCartoesVermelhos"
+                                    :options="chartOptions"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="row mb-5">
+                            <div class="col-lg-6 mb-2">
+                                <p class="text-center legenda-chart">Mais cartões azuis</p>
+                                <Bar
+                                    :data="chartMaisCartoesAzuis"
+                                    :options="chartOptions"
+                                />
+                            </div>
+
+                            <div class="col-lg-6 mb-2">
+                                <p class="text-center legenda-chart">Mais gols contra</p>
+                                <Bar
+                                    :data="chartMaisGolsContra"
+                                    :options="chartOptions"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="col-lg-6 mb-2">
-                <p class="text-center legenda-chart">Principais garçons</p>
-                <Bar
-                    :data="chartAssistencias"
-                    :options="chartOptions"
-                />
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Estatísticas do ano
+                    </button>
+                </h2>
+
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <dashboard-anual
+                            :estatisticas="estatisticasAnuais"
+                        />
+                    </div>
+                </div>
             </div>
         </div>
-
-        <br>
-
-        <h5 class="text-danger">Destaques negativos da semana</h5>
-
-        <div class="row mb-5">
-            <div class="col-lg-6 mb-2">
-                <p class="text-center legenda-chart">Mais cartões amarelos</p>
-                <Bar
-                    :data="chartMaisCartoesAmarelos"
-                    :options="chartOptions"
-                />
-            </div>
-
-            <div class="col-lg-6 mb-2">
-                <p class="text-center legenda-chart">Mais cartões vermelhos</p>
-                <Bar
-                    :data="chartMaisCartoesVermelhos"
-                    :options="chartOptions"
-                />
-            </div>
-        </div>
-
-        <div class="row mb-5">
-            <div class="col-lg-6 mb-2">
-                <p class="text-center legenda-chart">Mais cartões azuis</p>
-                <Bar
-                    :data="chartMaisCartoesAzuis"
-                    :options="chartOptions"
-                />
-            </div>
-
-            <div class="col-lg-6 mb-2">
-                <p class="text-center legenda-chart">Mais gols contra</p>
-                <Bar
-                    :data="chartMaisGolsContra"
-                    :options="chartOptions"
-                />
-            </div>
-        </div>
-
-        <hr>
-
-        <!--DADOS ANUAIS-->
-        <dashboard-anual
-            :estatisticas="estatisticasAnuais"
-        />
-
     </div>
 </template>
 
@@ -265,5 +286,11 @@
     .legenda-chart {
         color: #474646;
         font-weight: 600;
+    }
+    .collapse {
+        visibility: visible !important;
+    }
+    .container-fluid {
+        padding-bottom: 20px
     }
 </style>
