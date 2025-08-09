@@ -1,82 +1,70 @@
 <template>
-    <div class="container-fluid">
-        <h3 align="center" class="mb-3">Dashboard</h3>
+    <div>
+        <div class="container-fluid">
+            <h5 class="text-success">Destaques positivos de {{ anoAtual }}</h5>
+            <div class="row mb-3">
+                <div class="col-lg-6 mb-2">
+                    <p class="text-center legenda-chart">Principais artilheiros</p>
+                    <Bar
+                        :data="chartArtilheiros"
+                        :options="chartOptions"
+                    />
+                </div>
 
-        <!--DADOS SEMANAIS-->
-        <h5 class="text-success">Destaques positivos da semana</h5>
-        <div class="row mb-3">
-            <div class="col-lg-6 mb-2">
-                <p class="text-center legenda-chart">Principais artilheiros</p>
-                <Bar
-                    :data="chartArtilheiros"
-                    :options="chartOptions"
-                />
+                <div class="col-lg-6 mb-2">
+                    <p class="text-center legenda-chart">Principais garçons</p>
+                    <Bar
+                        :data="chartAssistencias"
+                        :options="chartOptions"
+                    />
+                </div>
             </div>
 
-            <div class="col-lg-6 mb-2">
-                <p class="text-center legenda-chart">Principais garçons</p>
-                <Bar
-                    :data="chartAssistencias"
-                    :options="chartOptions"
-                />
+            <br>
+
+            <h5 class="text-danger">Destaques negativos de {{ anoAtual }}</h5>
+
+            <div class="row mb-5">
+                <div class="col-lg-6 mb-2">
+                    <p class="text-center legenda-chart">Mais cartões amarelos</p>
+                    <Bar
+                        :data="chartMaisCartoesAmarelos"
+                        :options="chartOptions"
+                    />
+                </div>
+
+                <div class="col-lg-6 mb-2">
+                    <p class="text-center legenda-chart">Mais cartões vermelhos</p>
+                    <Bar
+                        :data="chartMaisCartoesVermelhos"
+                        :options="chartOptions"
+                    />
+                </div>
+            </div>
+
+            <div class="row mb-5">
+                <div class="col-lg-6 mb-2">
+                    <p class="text-center legenda-chart">Mais cartões azuis</p>
+                    <Bar
+                        :data="chartMaisCartoesAzuis"
+                        :options="chartOptions"
+                    />
+                </div>
+
+                <div class="col-lg-6 mb-2">
+                    <p class="text-center legenda-chart">Mais gols contra</p>
+                    <Bar
+                        :data="chartMaisGolsContra"
+                        :options="chartOptions"
+                    />
+                </div>
             </div>
         </div>
-
-        <br>
-
-        <h5 class="text-danger">Destaques negativos da semana</h5>
-
-        <div class="row mb-5">
-            <div class="col-lg-6 mb-2">
-                <p class="text-center legenda-chart">Mais cartões amarelos</p>
-                <Bar
-                    :data="chartMaisCartoesAmarelos"
-                    :options="chartOptions"
-                />
-            </div>
-
-            <div class="col-lg-6 mb-2">
-                <p class="text-center legenda-chart">Mais cartões vermelhos</p>
-                <Bar
-                    :data="chartMaisCartoesVermelhos"
-                    :options="chartOptions"
-                />
-            </div>
-        </div>
-
-        <div class="row mb-5">
-            <div class="col-lg-6 mb-2">
-                <p class="text-center legenda-chart">Mais cartões azuis</p>
-                <Bar
-                    :data="chartMaisCartoesAzuis"
-                    :options="chartOptions"
-                />
-            </div>
-
-            <div class="col-lg-6 mb-2">
-                <p class="text-center legenda-chart">Mais gols contra</p>
-                <Bar
-                    :data="chartMaisGolsContra"
-                    :options="chartOptions"
-                />
-            </div>
-        </div>
-
-        <hr>
-
-        <!--DADOS ANUAIS-->
-        <dashboard-anual
-            :estatisticas="estatisticasAnuais"
-        />
-
     </div>
 </template>
 
 <script>
-    import axios from 'axios';
-    import { Bar } from 'vue-chartjs';
-    import DashboardAnual from './DashboardAnual.vue';
-    import { swalError } from '@/utils/utils';
+    import { Bar } from 'vue-chartjs'
     import {
         Chart as ChartJS,
         Title,
@@ -87,24 +75,23 @@
         LinearScale,
     } from 'chart.js'
 
-    ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+    ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
     export default {
-        name: 'Dashboard',
+        name: 'DashboardAnual',
         components: {
-            Bar,
-            DashboardAnual,
+            Bar
         },
         data() {
             return {
-                estatisticasUltimoJogo: [],
-                estatisticasAnuais: [],
                 anoAtual: new Date().getFullYear(),
             }
         },
-        created() {
-            this.lerDadosUltimoJogo();
-            this.lerEstatisticasDoAno();
+        props: {
+            estatisticas: {
+                type: Array,
+                required: true,
+            },
         },
         computed: {
             chartOptions() {
@@ -112,7 +99,7 @@
                     responsive: true,
                     plugins: {
                         legend: { display: false },
-                        title: { display: false, text: '' }
+                        title: { display: false, text: '' },
                     },
                     scales: {
                         y: {
@@ -120,7 +107,7 @@
                             ticks: {
                                 stepSize: 1,
                                 precision: 0
-                            }
+                            },
                         },
                         x: {
                             ticks: {
@@ -135,9 +122,8 @@
                     },
                 }
             },
-            //DADOS SEMANAIS
             chartArtilheiros() {
-                const principaisArtilheiros = this.estatisticasUltimoJogo.slice(0, 5);
+                const principaisArtilheiros = this.estatisticas.slice(0, 5);
                 return {
                     labels: principaisArtilheiros.map(item => item.nome),
                     datasets: [
@@ -188,7 +174,7 @@
                     datasets: [
                         {
                             label: 'Cartões Vermelhos',
-                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            backgroundColor: 'rgba(242, 123, 124, 0.4)',
                             data: cartoes.map(item => item.total_vermelho)
                         }
                     ]
@@ -226,34 +212,8 @@
             },
         },
         methods: {
-            async lerDadosUltimoJogo() {
-                this.$loading.show();
-                try {
-                    const response = await axios.get('carregar-estatisticas-ultimo-jogo');
-                    this.estatisticasUltimoJogo = response.data.data;
-
-                }catch(error) {
-                    console.error(error);
-                    swalError(error.response.data.error)
-                }finally{
-                    this.$loading.hide();
-                }
-            },
-            async lerEstatisticasDoAno() {
-                this.$loading.show();
-                try {
-                    const response = await axios.get('carregar-todas-estatisticas-do-ano/' + this.anoAtual);
-                    this.estatisticasAnuais = response.data.data;
-
-                }catch(error) {
-                    console.error(error);
-                    swalError(error.response.data.error)
-                }finally{
-                    this.$loading.hide();
-                }
-            },
             estatisticasFiltradas(filtro) {
-                return [...this.estatisticasUltimoJogo]
+                return [...this.estatisticas]
                     .filter(item => item[filtro] > 0)
                     .sort((a, b) => b[filtro] - a[filtro]);
             }
