@@ -64,7 +64,8 @@
 </template>
 
 <script>
-    import { Bar } from 'vue-chartjs'
+    import { Bar } from 'vue-chartjs';
+    import ChartDataLabels from 'chartjs-plugin-datalabels';
     import {
         Chart as ChartJS,
         Title,
@@ -75,7 +76,7 @@
         LinearScale,
     } from 'chart.js'
 
-    ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
+    ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ChartDataLabels);
 
     export default {
         name: 'DashboardAnual',
@@ -100,6 +101,18 @@
                     plugins: {
                         legend: { display: false },
                         title: { display: false, text: '' },
+                        datalabels: {
+                            anchor: 'center',
+                            align: 'top',
+                            color: '#333',
+                            font: {
+                                weight: 'bold',
+                                size: 14,
+                            },
+                            formatter: function(value) {
+                                return value;
+                            }
+                        },
                     },
                     scales: {
                         y: {
