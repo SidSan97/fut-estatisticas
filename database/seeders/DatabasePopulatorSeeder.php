@@ -18,8 +18,8 @@ class DatabasePopulatorSeeder extends Seeder
         // 1. Crie 20 jogadores
         $mensalistas = Mensalista::factory()->count(20)->create();
 
-        // 2. Crie 50 jogos
-        $jogos = Jogo::factory()->count(50)->create();
+        // 2. Crie 5 jogos
+        $jogos = Jogo::factory()->count(5)->create();
 
         // 3. Para cada jogo, crie estatísticas para um número aleatório de jogadores (ex: 10 a 15)
         $jogos->each(function ($jogo) use ($mensalistas) {

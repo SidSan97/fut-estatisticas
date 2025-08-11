@@ -17,8 +17,9 @@ class MensalistaFactory extends Factory
     public function definition(): array
     {
         return [
-            'nome' => $this->faker->name(),
-            'ativo' => 1
+            'nome' => $this->faker->firstNameMale(),
+            'ativo' => 1,
+            'visitante' => 0,
         ];
     }
 }

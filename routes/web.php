@@ -8,9 +8,9 @@ Route::get('/', function () {
     return Inertia::render('Home');
 })->name('home');
 
-Route::get('dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('painel', function () {
+    return Inertia::render('auth/Panel');
+})->middleware(['auth', 'verified'])->name('panel');
 
 Route::get('carregar-todas-estatisticas', [EstatisticasController::class, 'index']);
 Route::get('carregar-estatisticas-ultimo-jogo', [EstatisticasController::class, 'obterDadosUltimaPartida']);

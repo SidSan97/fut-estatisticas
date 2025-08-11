@@ -19,10 +19,10 @@ class EstatisticaPorJogoFactory extends Factory
         return [
             'gols' => $this->faker->numberBetween(0, 5),
             'assistencias' => $this->faker->numberBetween(0, 5),
-            'cartao_amarelo' => $this->faker->numberBetween(0, 2),
-            'cartao_vermelho' => $this->faker->numberBetween(0, 1),
-            'cartao_azul' => $this->faker->numberBetween(0, 1),
-            'gols_contra' => $this->faker->numberBetween(0, 1),
+            'cartao_amarelo' => $this->faker->numberBetween(0, 4),
+            'cartao_vermelho' => $this->faker->numberBetween(0, 3),
+            'cartao_azul' => $this->faker->numberBetween(0, 3),
+            'gols_contra' => $this->faker->numberBetween(0, 4),
         ];
     }
 }

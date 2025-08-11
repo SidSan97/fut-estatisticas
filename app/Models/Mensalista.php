@@ -14,12 +14,14 @@ class Mensalista extends Model
     protected $fillable = [
         'nome',
         'ativo',
+        'visitante'
     ];
 
     protected function casts(): array
     {
         return [
             'ativo' => 'integer',
+            'visitante' => 'integer',
         ];
     }
 }
