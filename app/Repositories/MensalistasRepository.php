@@ -19,14 +19,29 @@ class MensalistasRepository {
     }
 
     public function inserirJogador(array $data) {
-
+        if($data['nome'] != '') {
+            $this->mensalista->create([
+                'nome'  => $data['nome'],
+                'ativo' => $data['ativo'],
+            ]);
+        }
     }
 
     public function atualizarMensalistas(array $data)
     {
-        foreach($data as $item) {
+        foreach($data['mensalistas'] as $item) {
             if(!isset($item['id'])) {
+                $this->inserirJogador($item);
 
+            } else {
+                if($item['nome'] != '') {
+                    $dadosMensalista = $this->mensalista->findOrFail($item['id']);
+
+                    $dadosMensalista->update([
+                        'nome'  => $item['nome'],
+                        'ativo' => $item['ativo'],
+                    ]);
+                }
             }
         }
     }

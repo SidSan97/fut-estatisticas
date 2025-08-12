@@ -6,11 +6,53 @@
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Gerenciar Jogadores
+                        <i class="bi bi-plus-circle me-3"></i> Registrar novo baba
                     </button>
                 </h2>
 
                 <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <label for="dataJogo">Insira a data do baba</label>
+                        <input type="date" class="form-control w-25 mb-2" id="dataJogo">
+
+                        <div class="table-responsive mb-3">
+                            <table class="table table-striped table-bordered">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Gols</th>
+                                        <th>Gols Contra</th>
+                                        <th>Assistências</th>
+                                        <th>Cartões Amarelos</th>
+                                        <th>Cartões Vermelhos</th>
+                                        <th>Cartões Azuis</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!--tr v-for="(item, idx) in estatisticasFiltradas" :key="idx">
+                                        <td>{{ item.nome }}</td>
+                                        <td >{{ item.total_gols }}</td>
+                                        <td :class="colunaDestaque('total_gols_contra')">{{ item.total_gols_contra }}</td>
+                                        <td :class="colunaDestaque('total_assistencias')">{{ item.total_assistencias }}</td>
+                                        <td :class="colunaDestaque('total_amarelo')">{{ item.total_amarelo }}</td>
+                                        <td :class="colunaDestaque('total_vermelho')">{{ item.total_vermelho }}</td>
+                                        <td :class="colunaDestaque('total_azul')">{{ item.total_azul }}</td>
+                                    </tr-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                       <i class="bi bi-person-fill me-3"></i> Gerenciar mensalistas
+                    </button>
+                </h2>
+
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <div class="table-responsive mb-3">
                             <table class="table table-striped table-bordered">
@@ -42,24 +84,14 @@
                                 </tbody>
                             </table>
 
-                            <button class="btn btn-primary mt-3" @click="salvarMensalistas">
-                                Salvar alterações
+                            <button class="btn btn-secondary mt-2 ms-3" @click="addJogador()">
+                                Add jogador <i class="bi bi-plus-circle"></i>
                             </button>
                         </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        Accordion Item #2
-                    </button>
-                </h2>
-
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                        <button class="btn btn-primary mt-3" @click="salvarMensalistas">
+                            Salvar alterações
+                        </button>
                     </div>
                 </div>
             </div>
@@ -91,6 +123,7 @@
         data() {
             return {
                 mensalistas: [],
+                jogo: [],
             }
         },
         created() {
@@ -102,6 +135,7 @@
                 try {
                     const response = await axios.get('listar-mensalistas');
                     this.mensalistas = response.data.data;
+                    console.log(this.mensalistas)
                 }catch(error) {
                     console.error(error);
                     swalError(error.response.data.error)
@@ -118,6 +152,12 @@
                     console.error(error)
                     swalError("Erro ao atualizar lista de mensalistas.");
                 }
+            },
+            addJogador() {
+                this.mensalistas.push({
+                    'ativo': 0,
+                    'nome': ''
+                })
             }
         }
     }
@@ -129,5 +169,8 @@
     }
     .container-fluid {
         padding-bottom: 20px
+    }
+    label {
+        font-weight: 500;
     }
 </style>

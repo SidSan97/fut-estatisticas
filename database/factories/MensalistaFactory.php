@@ -19,7 +19,6 @@ class MensalistaFactory extends Factory
         return [
             'nome' => $this->faker->firstNameMale(),
             'ativo' => 1,
-            'visitante' => 0,
         ];
     }
 }
