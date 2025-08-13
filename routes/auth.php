@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\JogoController;
 use App\Http\Controllers\MensalistasController;
 use Illuminate\Support\Facades\Route;
 
@@ -58,5 +59,5 @@ Route::middleware('auth')->group(function () {
 
     Route::get('listar-mensalistas', [MensalistasController::class, 'index'])->name('listar.mensalistas');
     Route::post('atualizar-mensalistas', [MensalistasController::class, 'store'])->name('atualizar.mensalistas');
-    Route::post('registrar-jogo', [MensalistasController::class, 'store'])->name('registrar.jogo');
+    Route::post('registrar-jogo', [JogoController::class, 'store'])->name('registrar.jogo');
 });

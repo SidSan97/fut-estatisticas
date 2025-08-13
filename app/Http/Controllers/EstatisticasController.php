@@ -55,4 +55,17 @@ class EstatisticasController extends Controller
             return  response()->json(['error' => "Não foi possivel carregar dados anual."], 500);
         }
     }
+
+    public function store(array $data, int $jogoId)
+    {
+        try {
+            $data = $this->estatisticasRepository->inserirEstatisticas($data, $jogoId);
+
+            return response()->json(['message' => "Estatística registrada com  sucesso!"], 201);
+
+        } catch(Exception $e) {
+            Log::error('Erro ao registrar estatística.', [$e]);
+            return  response()->json(['error' => "Não foi possivel registrar a estatística. Tente novamente ou chame o suporte."], 500);
+        }
+    }
 }

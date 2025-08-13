@@ -72,4 +72,20 @@ class EstatisticasRepository {
     {
         return $this->jogo::orderByDesc('id')->first();
     }
+
+    public function inserirEstatisticas(array $data, int $jogoId)
+    {
+        foreach($data as $item) {
+            $this->estatisticasPorJogo::create([
+                'jogo_id' => $jogoId,
+                'mensalista_id' => $item['jogador_id'],
+                'gols' => $item['gols'] ?? 0,
+                'gols_contra' => $item['gols_contra'] ?? 0,
+                'assistencias' => $item['assistencias'] ?? 0,
+                'cartao_amarelo' => $item['cartao_amarelo'] ?? 0,
+                'cartao_vermelho' => $item['cartao_vermelho'] ?? 0,
+                'cartao_azul' => $item['cartao_azul'] ?? 0,
+            ]);
+        }
+    }
 }

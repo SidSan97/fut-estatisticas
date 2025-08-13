@@ -20,10 +20,12 @@ class MensalistasRepository {
 
     public function inserirJogador(array $data) {
         if($data['nome'] != '') {
-            $this->mensalista->create([
+            $mensalista = $this->mensalista->create([
                 'nome'  => $data['nome'],
-                'ativo' => $data['ativo'],
+                'ativo' => $data['ativo'] ?? 0,
             ]);
+
+            return $mensalista->id;
         }
     }
 

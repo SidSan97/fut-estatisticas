@@ -13,7 +13,7 @@
                 <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <label for="dataJogo">Insira a data do baba</label>
-                        <input type="date" class="form-control w-25 mb-2" id="dataJogo" v-model="dataJogo">
+                        <input type="date" class="form-control w-50 mb-2" id="dataJogo" v-model="dataJogo">
 
                         <div class="table-responsive mb-3">
                             <table class="table table-striped table-bordered table-estatistica">
@@ -195,7 +195,7 @@
             async salvarMensalistas() {
                 try {
                     await axios.post('atualizar-mensalistas', { mensalistas: this.mensalistas });
-                    swalSuccess('Dados salvos com sucesso!');
+                    swalSuccess(response.data.message);
                     this.pegarListaMensalistas();
                 } catch (error) {
                     console.error(error)
@@ -203,7 +203,23 @@
                 }
             },
             async registrarJogo() {
-                console.log(this.jogo)
+                if(this.dataJogo === null) {
+                    swalError("Insira a data do baba.");
+                    return;
+                }
+
+                this.$loading.show();
+                try {
+                    await axios.post('registrar-jogo', { jogo: this.jogo, dataJogo: this.dataJogo });
+                    swalSuccess("Baba registrado com sucesso!");
+                    this.pegarListaMensalistas();
+                } catch (error) {
+                    console.error(error)
+                    swalError("Erro ao registrar baba.");
+                }
+                finally {
+                    this.$loading.hide();
+                }
             },
             addJogador() {
                 this.mensalistas.push({
