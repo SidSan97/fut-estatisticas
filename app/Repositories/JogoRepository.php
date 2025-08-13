@@ -27,4 +27,13 @@ class JogoRepository {
 
         return $jogo->id;
     }
+
+    public function atualizarJogo(int $id, string $dataJogo)
+    {
+        $jogo = $this->jogo->findOrFail($id);
+
+        $jogo->update([
+            'data_partida' => $dataJogo
+        ]);
+    }
 }

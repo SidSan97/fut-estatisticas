@@ -47,10 +47,10 @@ class EstatisticasRepository {
         return $estatisticas;
     }
 
-    public function pegarEstatisticasJogoMaisRecente(int $id)
+    public function pegarEstatisticasDoJogo(int $id)
     {
         $estatisticas = $this->mensalista::select([
-            'mensalistas.nome',
+            'mensalistas.nome', 'mensalistas.id as jogador_id', 'jogos.data_partida as data_partida',
             DB::raw('SUM(estatisticas_por_jogo.gols) as total_gols'),
             DB::raw('SUM(estatisticas_por_jogo.assistencias) as total_assistencias'),
             DB::raw('SUM(estatisticas_por_jogo.cartao_amarelo) as total_amarelo'),
@@ -61,7 +61,7 @@ class EstatisticasRepository {
         ->join('estatisticas_por_jogo', 'mensalistas.id', '=', 'estatisticas_por_jogo.mensalista_id')
         ->join('jogos', 'estatisticas_por_jogo.jogo_id', '=', 'jogos.id')
         ->where('jogos.id', $id)
-        ->groupBy('mensalistas.id', 'mensalistas.nome')
+        ->groupBy('mensalistas.id', 'mensalistas.nome', 'jogos.data_partida')
         ->orderByDesc('total_gols')
         ->get();
 
@@ -79,13 +79,45 @@ class EstatisticasRepository {
             $this->estatisticasPorJogo::create([
                 'jogo_id' => $jogoId,
                 'mensalista_id' => $item['jogador_id'],
-                'gols' => $item['gols'] ?? 0,
-                'gols_contra' => $item['gols_contra'] ?? 0,
-                'assistencias' => $item['assistencias'] ?? 0,
-                'cartao_amarelo' => $item['cartao_amarelo'] ?? 0,
-                'cartao_vermelho' => $item['cartao_vermelho'] ?? 0,
-                'cartao_azul' => $item['cartao_azul'] ?? 0,
+                'gols' => $item['total_gols'] ?? 0,
+                'gols_contra' => $item['total_gols_contra'] ?? 0,
+                'assistencias' => $item['total_assistencias'] ?? 0,
+                'cartao_amarelo' => $item['total_amarelo'] ?? 0,
+                'cartao_vermelho' => $item['total_vermelho'] ?? 0,
+                'cartao_azul' => $item['total_azul'] ?? 0,
             ]);
         }
+    }
+
+    public function atualizarEstatisticas(array $data, int $jogoId)
+    {
+        foreach($data as $item) {
+            $existe = $this->estatisticasPorJogo::where('jogo_id', $jogoId)
+                ->where('mensalista_id', $item['jogador_id'])
+                ->exists();
+
+            if ($existe) {
+                $this->estatisticasPorJogo::where('jogo_id', $jogoId)
+                    ->where('mensalista_id', $item['jogador_id'])
+                    ->update([
+                        'mensalista_id'   => $item['jogador_id'],
+                        'gols'            => $item['total_gols'] ?? 0,
+                        'gols_contra'     => $item['total_gols_contra'] ?? 0,
+                        'assistencias'    => $item['total_assistencias'] ?? 0,
+                        'cartao_amarelo'  => $item['total_amarelo'] ?? 0,
+                        'cartao_vermelho' => $item['total_vermelho'] ?? 0,
+                        'cartao_azul'     => $item['total_azul'] ?? 0,
+                    ]);
+            } else {
+                $this->inserirEstatisticas([$item], $jogoId);
+            }
+        }
+    }
+
+    public function deletetarEstatistica(int $jogoId, int $mensalistaId)
+    {
+        $this->estatisticasPorJogo::where('jogo_id', $jogoId)
+            ->where('mensalista_id', $mensalistaId)
+            ->delete();
     }
 }

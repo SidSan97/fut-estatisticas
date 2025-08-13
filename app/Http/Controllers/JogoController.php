@@ -60,4 +60,34 @@ class JogoController extends Controller
             return  response()->json(['error' => "Não foi possivel registrar o jogo. Tente novamente ou chame o suporte."], 500);
         }
     }
+
+    public function update(Request $request)
+    {
+        try {
+            $request = $request->all();
+
+            $this->jogoRepository->atualizarJogo($request['jogoId'], $request['dataJogo']);
+
+            foreach($request['jogo'] as &$item) {
+                if($item['jogador_id'] === null) {
+                    $mensalistaId = $this->mensalistaRepository->inserirJogador($item);
+                    $item['jogador_id'] = $mensalistaId;
+                }
+            }
+
+            $this->estatiscaRepository->atualizarEstatisticas($request['jogo'], $request['jogoId']);
+
+            if($request['jogadoresDeletados'] !== null) {
+                foreach($request['jogadoresDeletados'] as $item) {
+                    $this->estatiscaRepository->deletetarEstatistica($request['jogoId'], $item);
+                }
+            }
+
+            return response()->json(['message' => "Jogo atualizado com  sucesso!"], 200);
+
+        } catch(Exception $e) {
+            Log::error('Erro ao atualizar jogo.', [$e]);
+            return  response()->json(['error' => "Não foi possivel atualizar o jogo. Tente novamente ou chame o suporte."], 500);
+        }
+    }
 }

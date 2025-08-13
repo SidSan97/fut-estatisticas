@@ -6,6 +6,7 @@ use App\Repositories\EstatisticasRepository;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Inertia\Inertia;
 
 class EstatisticasController extends Controller
 {
@@ -33,7 +34,7 @@ class EstatisticasController extends Controller
     {
         try {
             $dadosUltimoJogo = $this->estatisticasRepository->pegarJogoMaisRecente();
-            $data = $this->estatisticasRepository->pegarEstatisticasJogoMaisRecente($dadosUltimoJogo['id']);
+            $data = $this->estatisticasRepository->pegarEstatisticasDoJogo($dadosUltimoJogo['id']);
 
             return response()->json(['data' => $data], 200);
 
@@ -53,6 +54,21 @@ class EstatisticasController extends Controller
         } catch(Exception $e) {
             Log::error('Erro ao carregar dados anual', [$e]);
             return  response()->json(['error' => "Não foi possivel carregar dados anual."], 500);
+        }
+    }
+
+    public function obterDadosDaPartida(int $id)
+    {
+        try {
+            $data = $this->estatisticasRepository->pegarEstatisticasDoJogo($id);
+
+            return Inertia::render('auth/EditMatch', [
+                'jogo' => $data
+            ]);
+
+        } catch(Exception $e) {
+            Log::error('Erro ao carregar dados do jogo', [$e]);
+            return  response()->json(['error' => "Não foi possivel carregar dados do jogo."], 500);
         }
     }
 

@@ -36,12 +36,12 @@
                                         <td v-else>
                                             <input type="text" class="form-control" v-model="item.nome">
                                         </td>
-                                        <td><input type="number" class="form-control" v-model.number="item.gols" min="0"></td>
-                                        <td><input type="number" class="form-control" v-model.number="item.gols_contra" min="0"></td>
-                                        <td><input type="number" class="form-control" v-model.number="item.assistencias" min="0"></td>
-                                        <td><input type="number" class="form-control" v-model.number="item.cartao_amarelo" min="0"></td>
-                                        <td><input type="number" class="form-control" v-model.number="item.cartao_vermelho" min="0"></td>
-                                        <td><input type="number" class="form-control" v-model.number="item.cartao_azul" min="0"></td>
+                                        <td><input type="number" class="form-control" v-model.number="item.total_gols" min="0"></td>
+                                        <td><input type="number" class="form-control" v-model.number="item.total_gols_contra" min="0"></td>
+                                        <td><input type="number" class="form-control" v-model.number="item.total_assistencias" min="0"></td>
+                                        <td><input type="number" class="form-control" v-model.number="item.total_amarelo" min="0"></td>
+                                        <td><input type="number" class="form-control" v-model.number="item.total_vermelho" min="0"></td>
+                                        <td><input type="number" class="form-control" v-model.number="item.total_azul" min="0"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -60,10 +60,11 @@
                                 </li>
                             </ul>
                         </div>
+
+                        <button class="btn btn-success ms-1 mt-4" @click="registrarJogo">
+                            Registrar baba
+                        </button>
                     </div>
-                    <button class="btn btn-success ms-1" @click="registrarJogo">
-                        Registrar baba
-                    </button>
                 </div>
             </div>
 
@@ -130,11 +131,11 @@
                         <div class="spinner-border" role="status" v-if="loading">
                             <span class="visually-hidden">Loading...</span>
                         </div>
-                        
+
                         <ul class="list-group" v-else>
                             <li class="list-group-item" v-for="(j, idx) in jogosOrdenados" :key="idx">
-                                <a :href="'editar-jogo/' + j.id" class="nav-link">
-                                    Baba do dia 
+                                <a :href="'editar-partida/' + j.id" class="nav-link">
+                                    Baba do dia
                                     <strong>{{ formatarData(j.data_partida) }}</strong>
                                 </a>
                             </li>
@@ -187,7 +188,7 @@
                 try {
                     const response = await axios.get('listar-mensalistas');
                     this.mensalistas = response.data.data;
-                    this.mensalistas.sort((a, b) => 
+                    this.mensalistas.sort((a, b) =>
                         a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' })
                     );
 
@@ -195,12 +196,12 @@
                     this.jogo = this.mensalistasAtivos.map(m => ({
                         nome: m.nome,
                         jogador_id: m.id,
-                        gols: 0,
-                        gols_contra: 0,
-                        assistencias: 0,
-                        cartao_amarelo: 0,
-                        cartao_vermelho: 0,
-                        cartao_azul: 0
+                        total_gols: 0,
+                        total_gols_contra: 0,
+                        total_assistencias: 0,
+                        total_amarelo: 0,
+                        total_vermelho: 0,
+                        total_azul: 0
                     }));
                 }catch(error) {
                     console.error(error);
@@ -276,7 +277,7 @@
                 const ano = data.getFullYear();
 
                 const formatoBR = `${dia}/${mes}/${ano}`;
-                
+
                 return formatoBR;
             }
         }

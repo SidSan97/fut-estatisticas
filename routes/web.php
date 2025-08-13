@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EstatisticasController;
+use App\Http\Controllers\JogoController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -11,6 +12,10 @@ Route::get('/', function () {
 Route::get('painel', function () {
     return Inertia::render('auth/Panel');
 })->middleware(['auth'])->name('panel');
+
+Route::get('editar-partida/{id}', [EstatisticasController::class, 'obterDadosDaPartida'])
+    ->middleware(['auth'])
+    ->name('edit.match');
 
 Route::get('carregar-todas-estatisticas', [EstatisticasController::class, 'index']);
 Route::get('carregar-estatisticas-ultimo-jogo', [EstatisticasController::class, 'obterDadosUltimaPartida']);
