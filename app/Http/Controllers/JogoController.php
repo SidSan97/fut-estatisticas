@@ -26,6 +26,18 @@ class JogoController extends Controller
         $this->estatiscaRepository = $estatiscaRepository;
     }
 
+    public function index()
+    {
+        try {
+            $data = $this->jogoRepository->carregarListaJogos();
+            return response()->json(['data' => $data], 200);
+
+        }catch(Exception $e) {
+            Log::error('Erro ao carregar lista de jogos.', [$e]);
+            return  response()->json(['error' => "Não foi possivel carregar a lista de jogos. Tente novamente ou chame o suporte."], 500);
+        }
+    }
+
     public function store(Request $request)
     {
         try {
@@ -41,10 +53,10 @@ class JogoController extends Controller
 
             $this->estatiscaRepository->inserirEstatisticas($request['jogo'], $jogoId);
 
-            return response()->json(['message' => "Baba registrado com  sucesso!"], 201);
+            return response()->json(['message' => "Jogo registrado com  sucesso!"], 201);
 
         } catch(Exception $e) {
-            Log::error('Erro ao registrar baba.', [$e]);
+            Log::error('Erro ao registrar jogo.', [$e]);
             return  response()->json(['error' => "Não foi possivel registrar o jogo. Tente novamente ou chame o suporte."], 500);
         }
     }

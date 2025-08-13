@@ -119,15 +119,26 @@
             </div>
 
             <div class="accordion-item">
-                <h2 class="accordion-header" id="headingThree">
+                <h2 class="accordion-header" id="headingThree" @click="carregarListaDeJogos">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        Accordion Item #3
+                        <i class="bi bi-check-circle-fill me-3"></i> Gerenciar baba
                     </button>
                 </h2>
 
                 <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                        <div class="spinner-border" role="status" v-if="loading">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        
+                        <ul class="list-group" v-else>
+                            <li class="list-group-item" v-for="(j, idx) in jogosOrdenados" :key="idx">
+                                <a :href="'editar-jogo/' + j.id" class="nav-link">
+                                    Baba do dia 
+                                    <strong>{{ formatarData(j.data_partida) }}</strong>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -147,6 +158,9 @@
                 mensalistas: [],
                 jogo: [],
                 dataJogo: null,
+                listaJogos: [],
+                loading: false,
+                tab: null,
             }
         },
         created() {
@@ -162,6 +176,9 @@
             },
             jogadoresVisitantes() {
                 return this.mensalistas.filter(m => m.ativo === 0);
+            },
+            jogosOrdenados() {
+                return this.listaJogos.sort((a,b) => b.id - a.id);
             }
         },
         methods: {
@@ -190,6 +207,18 @@
                     swalError(error.response.data.error)
                 }finally{
                     this.$loading.hide();
+                }
+            },
+            async carregarListaDeJogos() {
+                this.loading = true;
+                try {
+                    const response = await axios.get('carregar-jogos');
+                    this.listaJogos = response.data.data;
+                }catch(error) {
+                    console.error(error);
+                    swalError('Nao foi possivel carregar lista de jogos');
+                } finally {
+                    this.loading = false;
                 }
             },
             async salvarMensalistas() {
@@ -238,6 +267,17 @@
                     cartao_vermelho: 0,
                     cartao_azul: 0
                 });
+            },
+            formatarData(isoDate) {
+                const data = new Date(isoDate);
+
+                const dia = String(data.getDate()).padStart(2, '0');
+                const mes = String(data.getMonth() + 1).padStart(2, '0'); // mês começa em 0
+                const ano = data.getFullYear();
+
+                const formatoBR = `${dia}/${mes}/${ano}`;
+                
+                return formatoBR;
             }
         }
     }
