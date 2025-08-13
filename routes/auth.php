@@ -58,4 +58,5 @@ Route::middleware('auth')->group(function () {
 
     Route::get('listar-mensalistas', [MensalistasController::class, 'index'])->name('listar.mensalistas');
     Route::post('atualizar-mensalistas', [MensalistasController::class, 'store'])->name('atualizar.mensalistas');
+    Route::post('registrar-jogo', [MensalistasController::class, 'store'])->name('registrar.jogo');
 });

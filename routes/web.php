@@ -10,7 +10,7 @@ Route::get('/', function () {
 
 Route::get('painel', function () {
     return Inertia::render('auth/Panel');
-})->middleware(['auth', 'verified'])->name('panel');
+})->middleware(['auth'])->name('panel');
 
 Route::get('carregar-todas-estatisticas', [EstatisticasController::class, 'index']);
 Route::get('carregar-estatisticas-ultimo-jogo', [EstatisticasController::class, 'obterDadosUltimaPartida']);

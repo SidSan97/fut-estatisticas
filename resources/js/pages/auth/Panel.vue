@@ -13,10 +13,10 @@
                 <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <label for="dataJogo">Insira a data do baba</label>
-                        <input type="date" class="form-control w-25 mb-2" id="dataJogo">
+                        <input type="date" class="form-control w-25 mb-2" id="dataJogo" v-model="dataJogo">
 
                         <div class="table-responsive mb-3">
-                            <table class="table table-striped table-bordered">
+                            <table class="table table-striped table-bordered table-estatistica">
                                 <thead class="table-dark">
                                     <tr>
                                         <th>Nome</th>
@@ -29,19 +29,41 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!--tr v-for="(item, idx) in estatisticasFiltradas" :key="idx">
-                                        <td>{{ item.nome }}</td>
-                                        <td >{{ item.total_gols }}</td>
-                                        <td :class="colunaDestaque('total_gols_contra')">{{ item.total_gols_contra }}</td>
-                                        <td :class="colunaDestaque('total_assistencias')">{{ item.total_assistencias }}</td>
-                                        <td :class="colunaDestaque('total_amarelo')">{{ item.total_amarelo }}</td>
-                                        <td :class="colunaDestaque('total_vermelho')">{{ item.total_vermelho }}</td>
-                                        <td :class="colunaDestaque('total_azul')">{{ item.total_azul }}</td>
-                                    </tr-->
+                                    <tr v-for="(item, idx) in jogo" :key="idx">
+                                        <td v-if="item.jogador_id !== null">
+                                            {{ item.nome }}
+                                        </td>
+                                        <td v-else>
+                                            <input type="text" class="form-control" v-model="item.nome">
+                                        </td>
+                                        <td><input type="number" class="form-control" v-model.number="item.gols" min="0"></td>
+                                        <td><input type="number" class="form-control" v-model.number="item.gols_contra" min="0"></td>
+                                        <td><input type="number" class="form-control" v-model.number="item.assistencias" min="0"></td>
+                                        <td><input type="number" class="form-control" v-model.number="item.cartao_amarelo" min="0"></td>
+                                        <td><input type="number" class="form-control" v-model.number="item.cartao_vermelho" min="0"></td>
+                                        <td><input type="number" class="form-control" v-model.number="item.cartao_azul" min="0"></td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
+
+                        <div class="dropdown ms-3">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                Adicionar visitante
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li v-for="(v, idx) in jogadoresVisitantes" :key="idx">
+                                    <a class="dropdown-item" @click="addVisitante(v.id, v.nome)">{{ v.nome }}</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-danger" @click="addVisitante(null, '')">Outro jogador</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
+                    <button class="btn btn-success ms-1" @click="registrarJogo">
+                        Registrar baba
+                    </button>
                 </div>
             </div>
 
@@ -124,10 +146,23 @@
             return {
                 mensalistas: [],
                 jogo: [],
+                dataJogo: null,
             }
         },
         created() {
             this.pegarListaMensalistas();
+        },
+        computed: {
+            mensalistasAtivos() {
+                return this.mensalistas
+                    .filter(m => m.ativo === 1)
+                    .sort((a, b) =>
+                        a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' })
+                    );
+            },
+            jogadoresVisitantes() {
+                return this.mensalistas.filter(m => m.ativo === 0);
+            }
         },
         methods: {
             async pegarListaMensalistas() {
@@ -135,7 +170,21 @@
                 try {
                     const response = await axios.get('listar-mensalistas');
                     this.mensalistas = response.data.data;
-                    console.log(this.mensalistas)
+                    this.mensalistas.sort((a, b) => 
+                        a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' })
+                    );
+
+                    // Criar tabela de estatísticas com base nos nomes
+                    this.jogo = this.mensalistasAtivos.map(m => ({
+                        nome: m.nome,
+                        jogador_id: m.id,
+                        gols: 0,
+                        gols_contra: 0,
+                        assistencias: 0,
+                        cartao_amarelo: 0,
+                        cartao_vermelho: 0,
+                        cartao_azul: 0
+                    }));
                 }catch(error) {
                     console.error(error);
                     swalError(error.response.data.error)
@@ -153,11 +202,26 @@
                     swalError("Erro ao atualizar lista de mensalistas.");
                 }
             },
+            async registrarJogo() {
+                console.log(this.jogo)
+            },
             addJogador() {
                 this.mensalistas.push({
                     'ativo': 0,
                     'nome': ''
                 })
+            },
+            addVisitante(id, nome) {
+                this.jogo.push({
+                    nome: nome,
+                    jogador_id: id,
+                    gols: 0,
+                    gols_contra: 0,
+                    assistencias: 0,
+                    cartao_amarelo: 0,
+                    cartao_vermelho: 0,
+                    cartao_azul: 0
+                });
             }
         }
     }
@@ -172,5 +236,8 @@
     }
     label {
         font-weight: 500;
+    }
+    .dropdown-item {
+        cursor: pointer;
     }
 </style>
