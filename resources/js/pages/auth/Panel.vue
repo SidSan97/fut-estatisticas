@@ -134,7 +134,7 @@
 
                         <ul class="list-group" v-else>
                             <li class="list-group-item" v-for="(j, idx) in jogosOrdenados" :key="idx">
-                                <a :href="'editar-partida/' + j.id" class="nav-link">
+                                <a :href="'editar-partida/' + j.id">
                                     Baba do dia
                                     <strong>{{ formatarData(j.data_partida) }}</strong>
                                 </a>
@@ -161,7 +161,6 @@
                 dataJogo: null,
                 listaJogos: [],
                 loading: false,
-                tab: null,
             }
         },
         created() {
@@ -296,5 +295,11 @@
     }
     .dropdown-item {
         cursor: pointer;
+    }
+
+    @media(max-width: 499px) {
+        .table-estatistica input[type='text'] {
+            width: 80px !important;
+        }
     }
 </style>

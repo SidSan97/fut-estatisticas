@@ -1,6 +1,11 @@
 <template>
-    <div class="container-fluid">
+    <div class="container-fluid mb-3">
         <h2 class="text-center mb-3 mt-3">Editar dados do baba</h2>
+
+        <button class="btn btn-warning">
+            <a href="/painel" class="nav-link"> <i class="bi bi-arrow-bar-left"></i> Voltar</a>
+        </button> <br>
+
         <label for="dataJogo">Insira a data do baba</label>
         <input type="date" class="form-control w-50 mb-2" id="dataJogo" v-model="dataJogo">
 
@@ -43,10 +48,10 @@
         </div>
 
         <button class="btn btn-secondary" type="button" @click="addVisitante(null, '')">
-            Adicionar visitante
+            <i class="bi bi-plus-circle"></i> Adicionar visitante
         </button> <br>
 
-        <button class="btn btn-success ms-2 mt-2 mb-2" @click="atualizarJogo">
+        <button class="btn btn-success ms-2 mt-4" @click="atualizarJogo">
             Atualizar baba
         </button>
     </div>
@@ -54,7 +59,7 @@
 
 <script>
     import axios from 'axios';
-    import { swalConfirmation, swalError, swalSuccess } from '@/utils/utils';
+    import { swalError, swalSuccess } from '@/utils/utils';
 
     export default {
         name: 'EditMatch',
@@ -124,3 +129,11 @@
         }
     }
 </script>
+
+<style scoped>
+    @media(max-width: 499px) {
+        tbody td input {
+            width: 70px !important;
+        }
+    }
+</style>
