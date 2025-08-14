@@ -2,6 +2,12 @@
     <div class="container-fluid">
         <h2 class="text-center mt-3 mb-3">Painel administrativo</h2>
 
+        <div class="d-flex justify-content-end me-2 mb-2">
+            <button class="btn btn-warning">
+                <a class="nav-link" :href="route('home')">Página principal</a>
+            </button>
+        </div>
+
         <div class="accordion" id="accordionExample">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
@@ -20,7 +26,7 @@
                                 <thead class="table-dark">
                                     <tr>
                                         <th>Nome</th>
-                                        <th>Gols</th>
+                                        <th>Gols Marcados</th>
                                         <th>Gols Contra</th>
                                         <th>Assistências</th>
                                         <th>Cartões Amarelos</th>

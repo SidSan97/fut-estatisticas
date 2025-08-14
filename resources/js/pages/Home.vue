@@ -2,6 +2,11 @@
     <div>
         <h1 align="center" class="mt-3">Estatísticas do Baba</h1>
 
+        <div class="d-flex justify-content-end me-2">
+            <button class="btn btn-warning">
+                <a class="nav-link" :href="route('panel')">Ir para o painel</a>
+            </button>
+        </div>
         <ul class="nav nav-tabs mb-3">
             <li class="nav-item">
                 <a

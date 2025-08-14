@@ -14,7 +14,7 @@
                 <thead class="table-dark">
                     <tr>
                         <th>Nome</th>
-                        <th>Gols</th>
+                        <th>Gols Marcados</th>
                         <th>Gols Contra</th>
                         <th>Assistências</th>
                         <th>Cartões Amarelos</th>
