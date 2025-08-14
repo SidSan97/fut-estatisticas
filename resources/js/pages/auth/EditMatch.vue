@@ -3,7 +3,7 @@
         <h2 class="text-center mb-3 mt-3">Editar dados do baba</h2>
 
         <button class="btn btn-warning">
-            <a href="/painel" class="nav-link"> <i class="bi bi-arrow-bar-left"></i> Voltar</a>
+            <a :href="route('panel')" class="nav-link"> <i class="bi bi-arrow-bar-left"></i> Voltar</a>
         </button> <br>
 
         <label for="dataJogo">Insira a data do baba</label>
@@ -109,7 +109,7 @@
                     const partes = pathname.split('/');
                     const id = parseInt(partes[partes.length - 1]);
 
-                    await axios.post('/editar-partida', {
+                    await axios.post(route('editar.partida'), {
                         jogo: this.estatisticas,
                         jogoId: id,
                         dataJogo: this.dataJogo,
