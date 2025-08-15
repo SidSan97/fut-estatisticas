@@ -57,7 +57,7 @@ class JogoController extends Controller
 
         } catch(Exception $e) {
             Log::error('Erro ao registrar jogo.', [$e]);
-            return  response()->json(['error' => "Não foi possivel registrar o jogo. Tente novamente ou chame o suporte."], 500);
+            return  response()->json(['error' => "Não foi possível registrar o jogo. Tente novamente ou chame o suporte."], 500);
         }
     }
 
@@ -87,7 +87,7 @@ class JogoController extends Controller
 
         } catch(Exception $e) {
             Log::error('Erro ao atualizar jogo.', [$e]);
-            return  response()->json(['error' => "Não foi possivel atualizar o jogo. Tente novamente ou chame o suporte."], 500);
+            return  response()->json(['error' => "Não foi possível atualizar o jogo. Tente novamente ou chame o suporte."], 500);
         }
     }
 }
