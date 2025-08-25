@@ -27,11 +27,11 @@
                                     <tr>
                                         <th>Nome</th>
                                         <th>Gols Marcados</th>
-                                        <th>Gols Contra</th>
                                         <th>Assistências</th>
                                         <th>Cartões Amarelos</th>
                                         <th>Cartões Vermelhos</th>
                                         <th>Cartões Azuis</th>
+                                        <th>Gols Contra</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -43,11 +43,11 @@
                                             <input type="text" class="form-control" v-model="item.nome">
                                         </td>
                                         <td><input type="number" class="form-control" v-model.number="item.total_gols" min="0"></td>
-                                        <td><input type="number" class="form-control" v-model.number="item.total_gols_contra" min="0"></td>
                                         <td><input type="number" class="form-control" v-model.number="item.total_assistencias" min="0"></td>
                                         <td><input type="number" class="form-control" v-model.number="item.total_amarelo" min="0"></td>
                                         <td><input type="number" class="form-control" v-model.number="item.total_vermelho" min="0"></td>
                                         <td><input type="number" class="form-control" v-model.number="item.total_azul" min="0"></td>
+                                        <td><input type="number" class="form-control" v-model.number="item.total_gols_contra" min="0"></td>
                                     </tr>
                                 </tbody>
                             </table>

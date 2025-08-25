@@ -21,22 +21,22 @@
                     <tr>
                         <th>Nome</th>
                         <th :class="colunaDestaque('total_gols')">Gols</th>
-                        <th :class="colunaDestaque('total_gols_contra')">Gols Contra</th>
                         <th :class="colunaDestaque('total_assistencias')">Assistências</th>
                         <th :class="colunaDestaque('total_amarelo')">Cartões Amarelos</th>
                         <th :class="colunaDestaque('total_vermelho')">Cartões Vermelhos</th>
                         <th :class="colunaDestaque('total_azul')">Cartões Azuis</th>
+                        <th :class="colunaDestaque('total_gols_contra')">Gols Contra</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(item, idx) in estatisticasFiltradas" :key="idx">
                         <td>{{ item.nome }}</td>
                         <td :class="colunaDestaque('total_gols')">{{ item.total_gols }}</td>
-                        <td :class="colunaDestaque('total_gols_contra')">{{ item.total_gols_contra }}</td>
                         <td :class="colunaDestaque('total_assistencias')">{{ item.total_assistencias }}</td>
                         <td :class="colunaDestaque('total_amarelo')">{{ item.total_amarelo }}</td>
                         <td :class="colunaDestaque('total_vermelho')">{{ item.total_vermelho }}</td>
                         <td :class="colunaDestaque('total_azul')">{{ item.total_azul }}</td>
+                        <td :class="colunaDestaque('total_gols_contra')">{{ item.total_gols_contra }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -52,22 +52,22 @@
                     <tr>
                         <th>Nome</th>
                         <th>Gols</th>
-                        <th>Gols Contra</th>
                         <th>Assistências</th>
                         <th>Cartões Amarelos</th>
                         <th>Cartões Vermelhos</th>
                         <th>Cartões Azuis</th>
+                        <th>Gols Contra</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(item, idx) in estatisticasUltimoJogo" :key="idx">
                         <td>{{ item.nome }}</td>
                         <td>{{ item.total_gols }}</td>
-                        <td>{{ item.total_gols_contra }}</td>
                         <td>{{ item.total_assistencias }}</td>
                         <td>{{ item.total_amarelo }}</td>
                         <td>{{ item.total_vermelho }}</td>
                         <td>{{ item.total_azul }}</td>
+                        <td>{{ item.total_gols_contra }}</td>
                     </tr>
                 </tbody>
             </table>
