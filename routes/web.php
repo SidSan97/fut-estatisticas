@@ -20,6 +20,7 @@ Route::get('editar-partida/{id}', [EstatisticasController::class, 'obterDadosDaP
 Route::get('carregar-todas-estatisticas', [EstatisticasController::class, 'index']);
 Route::get('carregar-estatisticas-ultimo-jogo', [EstatisticasController::class, 'obterDadosUltimaPartida']);
 Route::get('carregar-todas-estatisticas-do-ano/{ano}', [EstatisticasController::class, 'obterDadosPorAno']);
+Route::get('carregar-estatisticas-ano/{ano}', [EstatisticasController::class, 'filtrarPorAno']);
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

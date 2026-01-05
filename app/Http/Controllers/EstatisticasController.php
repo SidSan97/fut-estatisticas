@@ -72,6 +72,19 @@ class EstatisticasController extends Controller
         }
     }
 
+    public function filtrarPorAno(int $ano)
+    {
+        try {
+            $data = $this->estatisticasRepository->load($ano);
+
+            return response()->json(['data' => $data], 200);
+
+        } catch(Exception $e) {
+            Log::error('Erro ao carregar dados do ano filtrado', [$e]);
+            return  response()->json(['error' => "Não foi possivel carregar dados do ano filtrado."], 500);
+        }
+    }
+
     public function store(array $data, int $jogoId)
     {
         try {

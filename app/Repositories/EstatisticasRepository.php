@@ -26,6 +26,7 @@ class EstatisticasRepository {
 
     public function load(?int $ano = null)
     {
+        $ano = $ano ?? date('Y');
         $estatisticas = $this->mensalista::select([
             'mensalistas.nome', 'jogos.ano',
             DB::raw('SUM(estatisticas_por_jogo.gols) as total_gols'),
@@ -37,9 +38,10 @@ class EstatisticasRepository {
         ])
         ->join('estatisticas_por_jogo', 'mensalistas.id', '=', 'estatisticas_por_jogo.mensalista_id')
         ->join('jogos', 'estatisticas_por_jogo.jogo_id', '=', 'jogos.id')
-        ->when($ano !== null, function ($query) use ($ano) {
-            $query->where('jogos.ano', $ano);
-        })
+        /*->when($ano !== null, function ($query) use ($ano) {
+            $query->where('jogos.ano', 2026);
+        })*/
+        ->where('jogos.ano', '=', $ano)
         ->groupBy('mensalistas.id', 'mensalistas.nome', 'jogos.ano')
         ->orderByDesc('total_gols')
         ->get();

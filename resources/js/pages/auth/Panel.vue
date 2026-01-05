@@ -229,7 +229,7 @@
             },
             async salvarMensalistas() {
                 try {
-                    await axios.post('atualizar-mensalistas', { mensalistas: this.mensalistas });
+                    const response = await axios.post('atualizar-mensalistas', { mensalistas: this.mensalistas });
                     swalSuccess(response.data.message);
                     this.pegarListaMensalistas();
                 } catch (error) {

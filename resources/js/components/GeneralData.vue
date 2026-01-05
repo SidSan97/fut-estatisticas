@@ -2,17 +2,27 @@
     <div class="container-fluid">
         <h3 class="mb-3 me-2">Números totais</h3>
 
-        <div class="mb-3">
-            <label for="filtro" class="form-label me-2">Filtrar por:</label>
-            <select v-model="filtro" id="filtro" class="form-select w-auto d-inline-block">
-                <option value="">Sem filtros</option>
-                <option value="total_gols">Gols</option>
-                <option value="total_gols_contra">Gols Contra</option>
-                <option value="total_assistencias">Assistências</option>
-                <option value="total_amarelo">Cartões Amarelos</option>
-                <option value="total_vermelho">Cartões Vermelhos</option>
-                <option value="total_azul">Cartões Azuis</option>
-            </select>
+        <div class="d-lg-flex d-block mb-3">
+            <div class="mb-md-2 mb-1">
+                <label for="filtro" class="form-label me-2">Filtrar por:</label>
+                <select v-model="filtro" id="filtro" class="form-select w-auto d-inline-block">
+                    <option value="">Sem filtros</option>
+                    <option value="total_gols">Gols</option>
+                    <option value="total_gols_contra">Gols Contra</option>
+                    <option value="total_assistencias">Assistências</option>
+                    <option value="total_amarelo">Cartões Amarelos</option>
+                    <option value="total_vermelho">Cartões Vermelhos</option>
+                    <option value="total_azul">Cartões Azuis</option>
+                </select>
+            </div>
+
+            <div class="ms-md-3 ms-0">
+                <label for="filtro" class="form-label me-2">Selecionar ano:</label>
+                <input type="number" class="form-control w-auto d-inline-block" :value="anoSelecionado" @change="anoSelecionado = $event.target.value">
+                <button class="btn btn-primary ms-2" @click="filtrarPorAno">
+                    Filtrar
+                </button>
+            </div>
         </div>
 
         <div class="table-responsive mb-3">
@@ -87,6 +97,7 @@
                 estatisticas: [],
                 estatisticasUltimoJogo: [],
                 filtro: '',
+                anoSelecionado: new Date().getFullYear()
             }
         },
         computed: {
@@ -134,6 +145,20 @@
             },
             colunaDestaque(campo) {
                 return this.filtro === campo ? 'coluna-destaque' : '';
+            },
+            async filtrarPorAno() {
+                this.$loading.show();
+                axios.get(`carregar-estatisticas-ano/${this.anoSelecionado}`)
+                    .then(response => {
+                        this.estatisticas = response.data.data;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        swalError(error.response.data.error)
+                    })
+                    .finally(() => {
+                        this.$loading.hide();
+                    });
             }
         }
     }
